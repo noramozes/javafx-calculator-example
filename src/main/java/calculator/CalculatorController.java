@@ -15,6 +15,7 @@ public class CalculatorController {
     private boolean startNumber = true;
     private double number1;
     private String operator = "";
+    private boolean floatNum = false;
 
     @FXML
     private void initialize() {
@@ -43,7 +44,11 @@ public class CalculatorController {
            }
            double number2 = Double.parseDouble(display.getText());
            double result = calculator.calculate(number1, number2, operator);
-           display.setText(String.format("%.0f", result));
+           if(floatNum) {
+               display.setText(String.format("%s", result));
+           } else {
+               display.setText(String.format("%.0f", result));
+           }
            operator = "";
         } else {
             if (! operator.isEmpty()) {
@@ -55,4 +60,29 @@ public class CalculatorController {
         }
     }
 
+    public void allClearAction() {
+        display.setText("0");
+        startNumber = true;
+        operator = "";
+        floatNum = false;
+        System.out.println("All Clear");
+    }
+
+    public void dotAction() {
+        if (!display.getText().contains(".")) {
+            display.setText(display.getText() + ".");
+            System.out.println(".");
+            floatNum = true;
+        }
+    }
+
+    public void plusMinusAction() {
+        if(!display.getText().startsWith("-")) {
+            display.setText("-" + display.getText());
+            System.out.println("Sign changed to minus");
+        } else {
+            display.setText(display.getText().replace("-", ""));
+            System.out.println("Sign changed to plus");
+        }
+    }
 }
